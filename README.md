@@ -4,7 +4,7 @@ A static, responsive product website using the supplied `branding/final_logo.svg
 
 Preview: serve `dist` with a local HTTP server. No installation or build is required.
 
-Content reflects the manually verified prototype. Launch date, price, ordering details and exact social account URLs were not provided, so the website uses honest coming-soon messaging. No payment or email collection is enabled.
+Content reflects the manually verified prototype. Launch date, price and ordering details are not yet announced, so the website uses coming-soon messaging. The contact section links to info@datecube.in and the official Instagram, Facebook and YouTube profiles. No payment or email collection is enabled.
 
 Update the launch section and buying FAQ in `dist/index.html` when commercial details are confirmed. Assets and styling are in `dist/assets` and `dist/styles.css`.
 
