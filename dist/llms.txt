@@ -1,0 +1,30 @@
+# DateCube
+
+> DateCube is a 3×3 twistable perpetual desk calendar. One face displays the weekday, month and date. This is the official DateCube website.
+
+## Product facts
+
+- Turn the cube's layers by hand to set the date. It does not advance automatically.
+- The working prototype has been manually verified to display any weekday, month and date, including February 29.
+- No batteries, charging, screen or app are required to display a date.
+- The website photograph shows a handmade prototype with paper labels and a desk stand.
+- DateCube is in development. Pricing, a launch date and ordering details have not been announced. Final materials, finish, packaging and included accessories are still being developed.
+
+## Official website
+
+- [DateCube](https://datecube.in/): Product overview and prototype photograph.
+- [How it works](https://datecube.in/#how-it-works): Set the weekday, month and date on one face.
+- [Our story](https://datecube.in/#our-story): From handwritten labels to a working prototype.
+- [Launch status](https://datecube.in/#coming-soon): Current development status.
+- [Frequently asked questions](https://datecube.in/#questions): Product operation, prototype and availability.
+- [Contact](https://datecube.in/#contact): Email and official social profiles.
+
+## Official profiles
+
+- [Instagram](https://www.instagram.com/datecube.in/)
+- [Facebook](https://www.facebook.com/profile.php?id=61594479343554)
+- [YouTube](https://www.youtube.com/@datecube)
+
+## Contact
+
+Email: info@datecube.in

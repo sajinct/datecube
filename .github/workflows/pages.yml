@@ -23,6 +23,8 @@ jobs:
     steps:
       - name: Check out website
         uses: actions/checkout@v6
+      - name: Validate SEO and crawl files
+        run: node scripts/check-seo.cjs
       - name: Configure Pages
         uses: actions/configure-pages@v5
       - name: Upload website
