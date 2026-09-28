@@ -8,7 +8,13 @@ Content reflects the manually verified prototype. Launch date, price and orderin
 
 Update the launch section and buying FAQ in `dist/index.html` when commercial details are confirmed. Assets and styling are in `dist/assets` and `dist/styles.css`.
 
-The provided logo is preserved unchanged. Google Fonts is optional; local system fonts are the fallback. No tracking scripts are included.
+The provided logo is preserved unchanged. Google Fonts is optional; local system fonts are the fallback. No first-party analytics scripts are included. YouTube thumbnails contact YouTube; privacy-enhanced players load only when a visitor presses play. Instagram uses a local photo-backed card linking directly to the reel because its embed did not render reliably during preview.
+
+## Featured media
+
+The Watch section features the supplied YouTube explainer `RcQNokpmEH8`. The social gallery is a curated snapshot verified on 28 September 2026, not an automatically refreshing feed: Instagram reel `DdyWDK3CrW8`, YouTube Short `RHaJAy7auMQ`, and Facebook cover photo `122108807835482644`. Direct source links remain available if embeds are blocked or require sign-in. Update these entries in `dist/index.html` as new uploads are selected.
+
+The two additional local images are optimized JPEG versions of the supplied `datecube.png` introduction artwork and `branding/datecube-facebook-cover.png`. The introduction artwork is labeled as prototype imagery rather than claimed to be a published post. The Facebook cover was visually checked against the published upload. Original files are preserved.
 
 ## Search and AI discovery
 

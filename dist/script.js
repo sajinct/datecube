@@ -35,3 +35,19 @@ header.addEventListener('focusout', (event) => {
 });
 
 mobileViewport.addEventListener('change', () => setMenuOpen(false));
+
+// Keep real watch links as the no-JavaScript fallback. Load players only on request.
+document.querySelectorAll('.video-launch[data-embed]').forEach((link) => {
+  link.addEventListener('click', (event) => {
+    if (event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
+    event.preventDefault();
+    const player = document.createElement('iframe');
+    player.src = link.dataset.embed;
+    player.title = link.dataset.videoTitle;
+    player.allow = 'autoplay; encrypted-media; fullscreen; picture-in-picture';
+    player.allowFullscreen = true;
+    player.referrerPolicy = 'strict-origin-when-cross-origin';
+    link.replaceWith(player);
+    player.focus();
+  });
+});
