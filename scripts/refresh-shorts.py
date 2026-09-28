@@ -2,12 +2,34 @@
 import html
 import re
 from pathlib import Path
+from urllib.parse import urlparse
 
 CHANNEL_ID = "UCxKhHtCzsjSlOpVoyMFo-0g"
 SHORTS_URL = f"https://www.youtube.com/channel/{CHANNEL_ID}/shorts"
 START = "<!-- SHORTS:START -->"
 END = "<!-- SHORTS:END -->"
 PAGE = Path(__file__).resolve().parents[1] / "dist" / "index.html"
+
+
+def select_thumbnail(entry):
+    candidates = []
+    for image in entry.get("thumbnails") or []:
+        url = image.get("url", "")
+        parsed = urlparse(url)
+        width, height = image.get("width"), image.get("height")
+        if (parsed.scheme != "https" or parsed.hostname != "i.ytimg.com"
+                or not parsed.path.startswith(f"/vi/{entry['id']}/")
+                or not isinstance(width, (int, float))
+                or not isinstance(height, (int, float)) or min(width, height) <= 0):
+            continue
+        # Prefer portrait covers, then the most useful pixels after a 9:16 crop.
+        usable_width = min(width, height * 9 / 16)
+        candidates.append((height > width, usable_width, url, width, height))
+    if candidates:
+        _, _, url, width, height = max(candidates)
+        return {"url": url, "width": int(width), "height": int(height)}
+    return {"url": f"https://i.ytimg.com/vi/{entry['id']}/maxresdefault.jpg",
+            "width": 1280, "height": 720}
 
 
 def select_shorts(info):
@@ -26,7 +48,7 @@ def select_shorts(info):
         if video_id in seen or not isinstance(title, str) or not title.strip():
             continue
         seen.add(video_id)
-        result.append((video_id, title.strip()))
+        result.append((video_id, title.strip(), select_thumbnail(entry)))
         if len(result) == 5:
             break
     if not result:
@@ -36,12 +58,13 @@ def select_shorts(info):
 
 def render_cards(shorts):
     cards = []
-    for video_id, title in shorts:
+    for video_id, title, thumbnail in shorts:
         safe_title = html.escape(title, quote=True)
+        cover_url = html.escape(thumbnail["url"], quote=True)
         url = f"https://www.youtube.com/shorts/{video_id}"
         cards.append(f'''          <article class="social-card">
             <div class="social-card-heading"><img src="assets/icons/youtube.svg" width="22" height="22" alt=""><span>YOUTUBE SHORT</span><span>@datecube</span></div>
-            <div class="short-frame video-frame"><a class="video-launch" href="{url}" data-embed="https://www.youtube-nocookie.com/embed/{video_id}?autoplay=1&amp;rel=0" data-video-title="{safe_title}" aria-label="Play {safe_title}"><img src="https://i.ytimg.com/vi/{video_id}/hqdefault.jpg" width="480" height="360" loading="lazy" alt="{safe_title}"><span class="video-play" aria-hidden="true">▶</span><span class="video-label">PLAY SHORT</span></a></div>
+            <div class="short-frame video-frame"><a class="video-launch" href="{url}" data-embed="https://www.youtube-nocookie.com/embed/{video_id}?autoplay=1&amp;rel=0" data-video-title="{safe_title}" aria-label="Play {safe_title}"><img src="{cover_url}" data-fallback-src="https://i.ytimg.com/vi/{video_id}/hqdefault.jpg" width="{thumbnail['width']}" height="{thumbnail['height']}" loading="lazy" alt="{safe_title}"><span class="video-play" aria-hidden="true">▶</span><span class="video-label">PLAY SHORT</span></a></div>
             <div class="social-card-copy"><h3>{safe_title}</h3><a href="{url}" target="_blank" rel="noopener noreferrer">Watch on YouTube <span aria-hidden="true">↗</span></a></div>
           </article>''')
     return "\n".join(cards)

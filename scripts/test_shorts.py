@@ -29,13 +29,31 @@ class ShortsTests(unittest.TestCase):
 
     def test_titles_escaped_and_other_content_preserved(self):
         page = "explainer" + shorts.START + "old" + shorts.END + "footer"
-        result = shorts.update_page(page, [(entry(1)["id"], '<script>alert("x")</script>')])
+        result = shorts.update_page(page, [(entry(1)["id"], '<script>alert("x")</script>', shorts.select_thumbnail(entry(1)))])
         self.assertNotIn("<script>", result)
         self.assertIn("&lt;script&gt;", result)
         self.assertTrue(result.startswith("explainer"))
         self.assertTrue(result.endswith("footer"))
         with self.assertRaises(ValueError):
             shorts.update_page("no markers", [])
+
+    def test_thumbnail_prefers_largest_portrait_and_rejects_other_hosts(self):
+        item = entry(1)
+        base = f"https://i.ytimg.com/vi/{item['id']}/"
+        item['thumbnails'] = [
+            {"url": base + "landscape.jpg", "width": 1280, "height": 720},
+            {"url": base + "portrait-small.jpg", "width": 270, "height": 480},
+            {"url": base + "portrait.jpg?a=1&b=2", "width": 405, "height": 720},
+            {"url": "https://untrusted.example/cover.jpg", "width": 2160, "height": 3840},
+        ]
+        chosen = shorts.select_thumbnail(item)
+        self.assertEqual(chosen['url'], base + "portrait.jpg?a=1&b=2")
+        rendered = shorts.render_cards([(item['id'], item['title'], chosen)])
+        self.assertIn("a=1&amp;b=2", rendered)
+        self.assertIn('data-fallback-src=', rendered)
+
+    def test_thumbnail_without_metadata_tries_high_resolution(self):
+        self.assertTrue(shorts.select_thumbnail(entry(1))['url'].endswith('/maxresdefault.jpg'))
 
 
 if __name__ == "__main__":

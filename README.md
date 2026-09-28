@@ -39,3 +39,5 @@ Run `node scripts/check-seo.cjs` to check metadata, structured-data references, 
 GitHub Actions publishes `dist/` to GitHub Pages after each push to `main`. The custom domain is `datecube.in`. The repository settings must use GitHub Actions as the Pages source.
 
 DNS for the root domain requires four A records: 185.199.108.153, 185.199.109.153, 185.199.110.153, and 185.199.111.153. The `www` CNAME points to `sajinct.github.io`. Preserve mail and unrelated DNS records. Enable HTTPS enforcement once GitHub issues the certificate.
+
+Shorts covers use the largest portrait thumbnail supplied by YouTube. If no suitable metadata is present, they try the high-resolution standard cover. Failed images and tiny placeholder images fall back once to the standard thumbnail. Covers are refreshed with each hourly build.

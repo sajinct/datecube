@@ -36,6 +36,21 @@ header.addEventListener('focusout', (event) => {
 
 mobileViewport.addEventListener('change', () => setMenuOpen(false));
 
+// Some YouTube covers disappear or return a tiny placeholder rather than an error.
+document.querySelectorAll('img[data-fallback-src]').forEach((img) => {
+  const fallback = () => {
+    const url = img.dataset.fallbackSrc;
+    if (!url) return;
+    delete img.dataset.fallbackSrc;
+    img.src = url;
+  };
+  img.addEventListener('error', fallback);
+  img.addEventListener('load', () => {
+    if (img.naturalWidth <= 120) fallback();
+  });
+  if (img.complete && img.naturalWidth <= 120) fallback();
+});
+
 // Keep real watch links as the no-JavaScript fallback. Load players only on request.
 document.querySelectorAll('.video-launch[data-embed]').forEach((link) => {
   link.addEventListener('click', (event) => {
