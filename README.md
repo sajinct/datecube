@@ -8,13 +8,19 @@ Content reflects the manually verified prototype. Launch date, price and orderin
 
 Update the launch section and buying FAQ in `dist/index.html` when commercial details are confirmed. Assets and styling are in `dist/assets` and `dist/styles.css`.
 
-The provided logo is preserved unchanged. Google Fonts is optional; local system fonts are the fallback. No first-party analytics scripts are included. YouTube thumbnails contact YouTube; privacy-enhanced players load only when a visitor presses play. Instagram uses a local photo-backed card linking directly to the reel because its embed did not render reliably during preview.
+The provided logo is preserved unchanged. Google Fonts is optional; local system fonts are the fallback. No first-party analytics scripts are included. YouTube thumbnails contact YouTube; privacy-enhanced players load only when a visitor presses play.
 
-## Featured media
+## Automatically refreshed Shorts
 
-The Watch section features the supplied YouTube explainer `RcQNokpmEH8`. The social gallery is a curated snapshot verified on 28 September 2026, not an automatically refreshing feed: Instagram reel `DdyWDK3CrW8`, YouTube Short `RHaJAy7auMQ`, and Facebook cover photo `122108807835482644`. Direct source links remain available if embeds are blocked or require sign-in. Update these entries in `dist/index.html` as new uploads are selected.
+The separate Watch section keeps the YouTube explainer `RcQNokpmEH8`. The social showcase contains only YouTube Shorts from DateCube's channel `UCxKhHtCzsjSlOpVoyMFo-0g`.
 
-The two additional local images are optimized JPEG versions of the supplied `datecube.png` introduction artwork and `branding/datecube-facebook-cover.png`. The introduction artwork is labeled as prototype imagery rather than claimed to be a published post. The Facebook cover was visually checked against the published upload. Original files are preserved.
+The existing GitHub Pages workflow refreshes the newest five public Shorts on pushes, manual runs and an hourly schedule (17 minutes past the hour). It reads the channel's Shorts tab using yt-dlp, without downloading videos, cookies or API keys. It preserves YouTube's newest-first order, removes duplicates, and shows fewer cards when fewer than five Shorts exist. It does not classify ordinary videos as Shorts by their duration. Titles are HTML-escaped and IDs/source URLs are validated before rendering.
+
+The generated cards are written into static HTML between the SHORTS markers before deployment, so they work without a browser-side API or JavaScript feed request. If retrieval or validation fails, the deployment stops and the previous published site remains online; GitHub Actions records the failure. The scheduled output is deployed without committing generated changes to the repository.
+
+To refresh locally: install `yt-dlp`, then run `python scripts/refresh-shorts.py`. Run `python -m unittest discover -s scripts -p 'test_*.py'` to check selection, limits, failure handling and escaping, followed by `node scripts/check-seo.cjs`.
+
+Activation requires publishing the workflow to the default branch. GitHub may delay scheduled runs and automatically disables scheduled workflows in public repositories after 60 days without repository activity; re-enable the workflow in Actions if needed. See https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows#schedule. The public YouTube reader can need updates when YouTube changes; the workflow installs the current yt-dlp release each run. This is an hourly refresh, not an instant upload webhook.
 
 ## Search and AI discovery
 
